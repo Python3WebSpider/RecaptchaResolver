@@ -1,0 +1,5 @@
+environs
+requests
+pillow
+selenium
+loguru
