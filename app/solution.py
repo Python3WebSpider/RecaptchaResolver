@@ -1,5 +1,6 @@
 import random
 from typing import List, Union
+import requests
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -164,8 +165,11 @@ class Solution(object):
             f'captcha_target_name {self.captcha_target_name}'
         )
         entire_captcha_element: WebElement = self.get_entire_captcha_element()
-        entire_captcha_element.screenshot(
-            CAPTCHA_ENTIRE_IMAGE_FILE_PATH)
+        entire_captcha_url = entire_captcha_element.find_element_by_css_selector(
+            'td img').get_attribute('src')
+        logger.debug(f'entire_captcha_url {entire_captcha_url}')
+        with open(CAPTCHA_ENTIRE_IMAGE_FILE_PATH, 'wb') as f:
+            f.write(requests.get(entire_captcha_url).content)
         logger.debug(
             f'saved entire captcha to {CAPTCHA_ENTIRE_IMAGE_FILE_PATH}')
         resized_entire_captcha_base64_string = resize_base64_image(
