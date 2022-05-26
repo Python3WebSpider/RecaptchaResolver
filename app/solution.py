@@ -17,8 +17,6 @@ class Solution(object):
         self.browser = webdriver.Chrome()
         self.browser.get(url)
         self.wait = WebDriverWait(self.browser, 10)
-        self.captcha_rectangles_number = None
-        self.entire_captcha_width = None
         self.captcha_resolver = CaptchaResolver()
 
     def __del__(self):
@@ -142,25 +140,9 @@ class Solution(object):
         return bool(self.get_verify_error_info())
 
     def verify_entire_captcha(self):
-        captcha_rectangles = self.wait.until(EC.visibility_of_all_elements_located(
-            (By.CSS_SELECTOR, '#rc-imageselect-target table td')))
-        self.captcha_rectangles_number = len(captcha_rectangles)
-        logger.debug(
-            f'captcha_rectangles_number {self.captcha_rectangles_number}')
-        captcha_lines = self.wait.until(EC.visibility_of_all_elements_located(
-            (By.CSS_SELECTOR, '#rc-imageselect-target table tr')))
-        self.captcha_row_number = len(captcha_lines)
-        self.captcha_col_number = self.captcha_row_number
-        logger.debug(
-            f'captcha_row_number {self.captcha_row_number} captcha_col_number {self.captcha_col_number}')
         self.entire_captcha_natural_width = self.get_entire_captcha_natural_width()
         logger.debug(
             f'entire_captcha_natural_width {self.entire_captcha_natural_width}'
-        )
-        self.entire_captcha_display_width = self.get_entire_captcha_display_width()
-        self.entire_captcha_display_height = self.entire_captcha_display_width
-        logger.debug(
-            f'entire_captcha_display_width {self.entire_captcha_display_width}'
         )
         self.captcha_target_name = self.get_captcha_target_name()
         logger.debug(
