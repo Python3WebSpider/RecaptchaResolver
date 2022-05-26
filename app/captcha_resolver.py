@@ -16,7 +16,8 @@ class CaptchaResolver(object):
             "task": {
                 "type": "ReCaptchaV2Classification",
                 "image": image_base64_string,
-                "question": question_id
+                "question": question_id,
+                "softID": 78
             }
         }
         try:
