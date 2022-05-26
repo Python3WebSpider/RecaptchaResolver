@@ -1,4 +1,3 @@
-import random
 from typing import List, Union
 import requests
 from selenium import webdriver
@@ -6,7 +5,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.remote.webelement import WebElement
-from selenium.webdriver.common.action_chains import ActionChains
 import time
 from loguru import logger
 from app.captcha_resolver import CaptchaResolver
@@ -101,7 +99,11 @@ class Solution(object):
             logger.debug(f'no new single captcha displayed')
             return
         logger.debug('new single captcha displayed')
-        single_captcha_element.screenshot(CAPTCHA_SINGLE_IMAGE_FILE_PATH)
+        single_captcha_url = single_captcha_element.find_element_by_css_selector(
+            'img').get_attribute('src')
+        logger.debug(f'single_captcha_url {single_captcha_url}')
+        with open(CAPTCHA_SINGLE_IMAGE_FILE_PATH, 'wb') as f:
+            f.write(requests.get(single_captcha_url).content)
         resized_single_captcha_base64_string = resize_base64_image(
             CAPTCHA_SINGLE_IMAGE_FILE_PATH, (100, 100))
         single_captcha_recognize_result = self.captcha_resolver.create_task(
@@ -189,23 +191,11 @@ class Solution(object):
         if not recognized_indices:
             logger.error('count not get captcha recognized indices')
             return
+        single_captcha_elements = self.wait.until(EC.visibility_of_all_elements_located(
+            (By.CSS_SELECTOR, '#rc-imageselect-target table td')))
         for recognized_index in recognized_indices:
-            offset_x = recognized_index % self.captcha_row_number * \
-                (self.entire_captcha_display_width / self.captcha_row_number) + \
-                random.randint(
-                    0, int(self.entire_captcha_display_width / self.captcha_row_number))
-            offset_y = recognized_index // self.captcha_col_number * \
-                (self.entire_captcha_display_height / self.captcha_col_number) + \
-                random.randint(
-                    0, int(self.entire_captcha_display_height / self.captcha_col_number))
-            logger.debug(
-                f'recognized_index {recognized_index} click offset {offset_x}, {offset_y}')
-            # click target
-            ac = ActionChains(self.browser)
-            ac.move_to_element(entire_captcha_element) \
-                .move_by_offset(-self.entire_captcha_display_width / 2, -self.entire_captcha_display_height / 2) \
-                .move_by_offset(
-                offset_x, offset_y).click().perform()
+            single_captcha_element: WebElement = single_captcha_elements[recognized_index]
+            single_captcha_element.click()
             # check if need verify single captcha
             self.verify_single_captcha(recognized_index)
 
