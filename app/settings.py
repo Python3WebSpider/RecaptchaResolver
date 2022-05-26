@@ -12,6 +12,7 @@ CAPTCHA_ENTIRE_IMAGE_FILE_PATH = 'captcha_entire_image.png'
 CAPTCHA_SINGLE_IMAGE_FILE_PATH = 'captcha_single_image.png'
 CAPTCHA_RESIZED_IMAGE_FILE_PATH = 'captcha_resized_image.png'
 
+import json
 CAPTCHA_TARGET_NAME_QUESTION_ID_MAPPING = {
     "taxis": "/m/0pg52",
     "bus": "/m/01bjv",
@@ -35,8 +36,9 @@ CAPTCHA_TARGET_NAME_QUESTION_ID_MAPPING = {
     "stairs": "/m/01lynh",
     "出租车": "/m/0pg52",
     "巴士": "/m/01bjv",
-    "校车": "/m/02yvhj",
     "摩托车": "/m/04_sv",
+    "机动车": "/m/0k4j",
+    "小轿车": "/m/0k4j",
     "拖拉机": "/m/013xlm",
     "烟囱": "/m/01jk_4",
     "人行横道": "/m/014xcs",
@@ -49,5 +51,19 @@ CAPTCHA_TARGET_NAME_QUESTION_ID_MAPPING = {
     "棕榈树": "/m/0cdl1",
     "山": "/m/09d_r",
     "消防栓": "/m/01pns0",
-    "楼梯": "/m/01lynh"
+    "楼梯": "/m/01lynh",
+    "交通工具": "/m/0k4j",
+    "公交车": "/m/01bjv",
+    "彩色玻璃": "/m/011y23",
+    "火车站": "/m/0py27",
+    "消火栓": "/m/01pns0",
+    "过街人行道": "/m/014xcs",
+    "车库门": "/m/08l941",
+    "公交站": "/m/01jw_1",
+    "停车计时器": "/m/015qbp",
+    "丘陵": "/m/09d_r",
+    "车辆": "/m/0k4j",
+    "公共汽车": "/m/01bjv",
+    "交通灯": "/m/015qff",
+    "停车咪表": "/m/015qbp"
 }
